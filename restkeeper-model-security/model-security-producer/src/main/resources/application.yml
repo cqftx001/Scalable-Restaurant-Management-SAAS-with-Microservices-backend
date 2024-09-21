@@ -1,0 +1,78 @@
+#服务配置
+server:
+  #端口
+  port: 7073
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    redisson:
+      config: classpath:singleServerConfig.yaml
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.129:8848
+        namespace: public
+        group: SEATA_GROUP
+  #数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.200.129:3306/restkeeper-security?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      username: root
+      password: pass
+#mybatis配置
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.itheima.springcloud.pojo
+  # 该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象 。
+  type-aliases-super-type: com.itheima.restkeeper.basic.BasicPojo
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-statement-timeout: 60
+    default-fetch-size: 100
+  #忽略商户号表
+  ignore-enterprise-tables:
+    - tab_enterprise
+    - tab_resource
+    - tab_role
+    - tab_user
+    - tab_customer
+    - tab_role_resource
+    - tab_user_role
+    - undo_log
+  #忽略门店号表
+  ignore-store-tables:
+    - tab_enterprise
+    - tab_resource
+    - tab_role
+    - tab_user
+    - tab_customer
+    - tab_role_resource
+    - tab_user_role
+    - undo_log
+dubbo:
+  application:
+    version: 1.0.0
+    logger: slf4j
+  scan:
+    base-packages: com.itheima.restkeeper
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-basic-producer
+  registry:
+    address: spring-cloud://192.168.200.129
+  protocol:
+    #指定二进制协议
+    name: dubbo
+    port: 27073
+    threads: 200
+    accesslog: logs/model-security-producer-01.log

@@ -1,0 +1,109 @@
+#服务配置
+server:
+  #端口
+  port: 7077
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  #应用配置
+  application:
+    #应用名称
+    name: model-shop-producer
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    redisson:
+      config: classpath:singleServerConfig.yaml
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: project_tx_group
+  #数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.200.129:3306/restkeeper-shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      username: root
+      password: pass
+#mybatis配置
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.itheima.springcloud.pojo
+  # 该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象 。
+  type-aliases-super-type: com.itheima.restkeeper.basic.BasicPojo
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-statement-timeout: 60
+    default-fetch-size: 100
+  #忽略商户号表
+  ignore-enterprise-tables:
+    - tab_dish_flavor
+    - tab_order_item
+    - undo_log
+  #忽略门店号表
+  ignore-store-tables:
+    - tab_dish_flavor
+    - tab_brand
+    - tab_order_item
+    - tab_store
+    - undo_log
+seata:
+  tx-service-group: project_tx_group
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: true
+  service:
+    #这里的名字与file.conf中vgroup_project_tx_group = "default"相同
+    vgroup-mapping:
+      project_tx_group: default
+    #这里的名字与file.conf中default.grouplist = "192.168.200.129:8091"相同
+    grouplist:
+      default: 192.168.200.129:9200
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+  registry:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+dubbo:
+  #dubbo应用服务定义
+  application:
+    #版本
+    version: 1.0.0
+    #日志
+    logger: slf4j
+  scan:
+    #扫描路径
+    base-packages: com.itheima.restkeeper
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-basic-producer,model-trading-producer,model-shop-user
+  registry:
+    #注册中心
+    address: spring-cloud://192.168.200.129
+  #服务协议定义
+  protocol:
+    #服务协议名称
+    name: dubbo
+    #协议端口
+    port: 27077
+    #线程数
+    threads: 200
+    #dubbo调用日志
+    accesslog: logs/model-shop-producer-01.log

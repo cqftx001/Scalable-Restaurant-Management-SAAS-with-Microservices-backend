@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.itheima.restkeeper</groupId>
+    <artifactId>restkeeper-super</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <!--正式放入码云管理-->
+    <modules>
+        <module>restkeeper-framework</module>
+        <module>restkeeper-gateway</module>
+        <module>restkeeper-model-basic</module>
+        <module>restkeeper-model-security</module>
+        <module>restkeeper-model-report</module>
+        <module>restkeeper-model-shop</module>
+        <module>restkeeper-model-trading</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>restkeeper-super</name>
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--itheima.version-->
+        <itheima.version>1.0-SNAPSHOT</itheima.version>
+        <!--spring-cloud版本-->
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <!--spring-cloud-alibaba版本-->
+        <spring-cloud-alibaba.version>2.2.5.RC2</spring-cloud-alibaba.version>
+        <stream-rabbit.version>3.1.0</stream-rabbit.version>
+        <!--spring-boot版本-->
+        <spring.boot.version>2.3.2.RELEASE</spring.boot.version>
+        <!--mybatis-plus版本-->
+        <mybatis-plus-boot-starter.version>3.4.0</mybatis-plus-boot-starter.version>
+        <!--druid的springboot版本配置-->
+        <druid-spring-boot-starter>1.1.20</druid-spring-boot-starter>
+        <!--druid版本配置-->
+        <druid.version>1.1.22</druid.version>
+        <!--knife4j版本支持-->
+        <knife4j.version>2.0.5</knife4j.version>
+        <!--orika 拷贝工具 -->
+        <orika-core.version>1.5.4</orika-core.version>
+        <!--lang3-->
+        <commons.lang3.version>3.8.1</commons.lang3.version>
+        <!--kryo-->
+        <kryo.version>4.0.2</kryo.version>
+        <!--阿里支付-->
+        <alipay.easysdk.version>2.2.0</alipay.easysdk.version>
+        <!--guava版本 -->
+        <guava.version>20.0</guava.version>
+        <!--jwt版本-->
+        <jwt.version>3.8.1</jwt.version>
+        <!--jjwt版本-->
+        <jjwt.version>0.9.1</jjwt.version>
+        <!--fastjson版本-->
+        <fastjson.version>1.2.73</fastjson.version>
+        <!--sharding-jdbc版本-->
+        <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
+        <!--redisson版本-->
+        <redisson-spring-boot>3.11.2</redisson-spring-boot>
+        <!--seata-spring-boot-starter版本-->
+        <seata-spring-boot-starter.version>1.3.0</seata-spring-boot-starter.version>
+        <!--hessian协议支持-->
+        <hessian.version>4.0.7</hessian.version>
+        <!--xxl-job-->
+        <xxl-job-core.version>2.1.2</xxl-job-core.version>
+    </properties>
+
+    <!--声明jar-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-vo</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-web</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-commons</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-jwt</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-mybatis-plus</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-knife4j-web</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-knife4j-gateway</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-redis</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-seata</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-basic-interface</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-basic-service</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-security-interface</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-security-service</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-security-client</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-basic-log-client</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-sharding-jdbc</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-shop-interface</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-shop-service</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>framework-xxl-job</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-trading-interface</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.itheima.restkeeper</groupId>
+                <artifactId>model-trading-service</artifactId>
+                <version>${itheima.version}</version>
+            </dependency>
+
+            <!---springcould主配置-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!---spring-cloud-alibaba主配置-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
+                <version>2.1.1.RELEASE</version>
+            </dependency>
+
+            <!---springboot主配置-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 使用XA事务时，需要引入此模块 -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-transaction-xa-core</artifactId>
+                <version>${sharding-jdbc.version}</version>
+            </dependency>
+
+            <!-- 拷贝对象 -->
+            <dependency>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika-core.version}</version>
+            </dependency>
+
+            <!--工具包-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <!--fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!--knife4j版接口文档 访问/doc.html -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!--druid的springboot配置-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <!--springboot关于mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+            <!--代码生成器模板引擎 相关依赖-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+            <!--对象序列化-->
+            <dependency>
+                <groupId>com.esotericsoftware</groupId>
+                <artifactId>kryo</artifactId>
+                <version>${kryo.version}</version>
+            </dependency>
+
+            <!-- 阿里easy支付 -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-easysdk</artifactId>
+                <version>${alipay.easysdk.version}</version>
+            </dependency>
+
+            <!--guava工具包-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!--JWT-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <!--redis缓存客户端-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot}</version>
+            </dependency>
+
+            <!-- xxl-job-core -->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job-core.version}</version>
+            </dependency>
+
+            <!--r分布式事务配置-->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <version>${seata-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!-- sharding-jdbc -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>${sharding-jdbc.version}</version>
+            </dependency>
+
+            <!-- 使用BASE事务时，需要引入此模块 -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-transaction-base-seata-at</artifactId>
+                <version>${sharding-jdbc.version}</version>
+            </dependency>
+
+            <!--使用hessian协议-->
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>${hessian.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+                <version>${stream-rabbit.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!--jdk插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+            <!--springboot的打包插件-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.0.RELEASE</version>
+            </plugin>
+
+            <!-- maven-surefire-plugin 测试包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <!-- 全局是否执行maven生命周期中的测试：是否跳过测试 -->
+                    <skipTests>true</skipTests>
+                    <!-- 解决测试中文乱码-->
+                    <forkMode>once</forkMode>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

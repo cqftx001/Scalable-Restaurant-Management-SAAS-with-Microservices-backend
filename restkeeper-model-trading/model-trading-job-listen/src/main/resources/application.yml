@@ -1,0 +1,91 @@
+#服务配置
+server:
+  #端口
+  port: 8079
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  #应用配置
+  application:
+    #应用名称
+    name: model-trading-job-listen
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.129:8848
+        namespace: public
+        group: SEATA_GROUP
+    alibaba:
+      seata:
+        tx-service-group: project_tx_group
+logging:
+  config: classpath:logback.xml
+seata:
+  tx-service-group: project_tx_group
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: true
+  service:
+    #这里的名字与file.conf中vgroup_project_tx_group = "default"相同
+    vgroup-mapping:
+      project_tx_group: default
+    #这里的名字与file.conf中default.grouplist = "192.168.200.129:8091"相同
+    grouplist:
+      default: 192.168.200.129:9200
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+  registry:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+dubbo:
+  application:
+    version: 1.0.0
+    logger: slf4j
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-trading-producer,model-shop-producer
+  scan:
+    base-packages: com.itheima.restkeeper.job
+  registry:
+    address: spring-cloud://192.168.200.129
+  protocol:
+    name: dubbo
+    port: 28079
+    threads: 200
+    accesslog: logs/model-trading-job-listen-01.log
+restkeeper:
+  framework:
+    xxl-job:
+      executor:
+        # 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。
+        # 执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+        admin-addresses: http://192.168.200.129:8280/xxl-job-admin/
+        # 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+        app-name: model-trading-job-listen
+        # 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，
+        # 该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
+        ip:
+        # 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，
+        # 单机部署多个执行器时，注意要配置不同执行器端口；
+        port: 9998
+        # 执行器通讯TOKEN [选填]：非空时启用；
+        access-token:
+        # 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；
+        log-path: logs/model-trading-job-listen/handler
+        # 执行器日志保存天数 [选填] ：值大于3时生效，启用执行器Log文件定期清理功能，否则不生效；
+        log-retention-days: -1

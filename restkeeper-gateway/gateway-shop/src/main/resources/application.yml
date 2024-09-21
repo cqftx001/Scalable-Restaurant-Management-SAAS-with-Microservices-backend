@@ -1,0 +1,171 @@
+##服务配置
+#server:
+#  #端口
+#  port: 8017
+#  #服务编码
+#  tomcat:
+#    uri-encoding: UTF-8
+##spring相关配置
+#spring:
+#  main:
+#    allow-bean-definition-overriding: true
+#  redis:
+#    redisson:
+#      config: classpath:singleServerConfig.yaml
+#  #权限配置
+#  security:
+#    #匿名资源配置
+#    ignore-url:
+#      - /security/user/loginCode/**
+#      - /security/user/login
+#      - /doc.html
+#      - /basic-swagger/**
+#      - /security-swagger/**
+#      - /trading-swagger/**
+#      - /shop-swagger/**
+#      - /swagger-resources/**
+#      - /webjars/**
+#    #跨域配置
+#    origins:
+#      - http://ppsk.shop.eehp.cn:8080
+#      - http://ppsk.dc.eehp.cn:1080
+#    #登录页指定
+#    login-page: /security/user/login
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.200.129:8848
+#        namespace: public
+#        group: SEATA_GROUP
+#    stream:
+#      rabbit:
+#        bindings:
+#          log-output:
+#            producer:
+#              routing-key-expression: headers.type  # 生产者配置RabbitMq的动态路由键
+#              exchange-type: direct  # 指定交换机类型
+#      binders: #需要绑定的rabbitmq的服务信息
+#        defaultRabbit:  #定义的名称，用于bidding整合
+#          type: rabbit  #消息组件类型
+#          environment:  #配置rabbimq连接环境
+#            spring:
+#              rabbitmq:
+#                host: 192.168.200.129   #rabbitmq 服务器的地址
+#                port: 5672           #rabbitmq 服务器端口
+#                username: admin       #rabbitmq 用户名
+#                password: pass       #rabbitmq 密码
+#                virtual-host: /       #虚拟路径
+#      bindings:        #服务的整合处理
+#        log-output:    #这个是消息通道的名称
+#          destination: log-exchange     #exchange名称,交换模式默认是topic;把SpringCloud stream的消息输出通道绑定到RabbitMQ的exchange-logOutput交换器。
+#          content-type: application/json      #设置消息的类型，本次为json
+#          binder: defaultRabbit
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#          lowerCaseServiceId: true
+#      routes:
+#        - id: model-trading-web #从nacos中找到服务
+#          uri: lb://model-trading-web
+#          predicates:
+#            - Path=/trading/** #路径断言
+#          filters:
+#            - StripPrefix=1
+#        - id: model-trading-swagger #从nacos中找到服务
+#          uri: lb://model-trading-web
+#          filters:
+#            - SwaggerHeaderFilter
+#            - StripPrefix=1
+#          predicates:
+#            - Path=/trading-swagger/**
+#        - id: model-security-web #从nacos中找到服务
+#          uri: lb://model-security-web
+#          predicates:
+#            - Path=/security/** #路径断言
+#          filters:
+#            - StripPrefix=1
+#        - id: model-security-swagger #从nacos中找到服务
+#          uri: lb://model-security-web
+#          filters:
+#            - SwaggerHeaderFilter
+#            - StripPrefix=1
+#          predicates:
+#            - Path=/security-swagger/**
+#        - id: model-basic-web #从nacos中找到服务
+#          uri: lb://model-basic-web
+#          predicates:
+#            - Path=/basic/**
+#          filters:
+#            - StripPrefix=1
+#        - id: model-basic-swagger #从nacos中找到服务
+#          uri: lb://model-basic-web
+#          filters:
+#            - SwaggerHeaderFilter
+#            - StripPrefix=1
+#          predicates:
+#            - Path=/basic-swagger/**
+#        - id: model-shop-web #从nacos中找到服务
+#          uri: lb://model-shop-web
+#          predicates:
+#            - Path=/shop/**
+#          filters:
+#            - StripPrefix=1
+#        - id: model-shop-swagger #从nacos中找到服务
+#          uri: lb://model-shop-web
+#          filters:
+#            - SwaggerHeaderFilter
+#            - StripPrefix=1
+#          predicates:
+#            - Path=/shop-swagger/**
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            # 允许携带认证信息
+#            # 允许跨域的源(网站域名/ip)，设置*为全部
+#            # 允许跨域请求里的head字段，设置*为全部
+#            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+#            # 跨域允许的有效期
+#            allow-credentials: true
+#            allowedOrigins:
+#              - "http://ppsk.shop.eehp.cn:8080"
+#              - "http://ppsk.dc.eehp.cn:1080"
+#            allowedHeaders: "*"
+#            allowedMethods: "*"
+#logging:
+#  config: classpath:logback.xml
+#dubbo:
+#  application:
+#    version: 1.0.0
+#    logger: slf4j
+#  cloud:
+#    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+#    subscribed-services: model-security-producer
+#  scan:
+#    base-packages: com.itheima.restkeeper
+#  registry:
+#    address: spring-cloud://192.168.200.129
+#  protocol:
+#    name: dubbo
+#    port: 28017
+#    threads: 200
+#    accesslog: logs/gateway-shop-01.log
+#restkeeper:
+#  framework:
+#    jwt:
+#      base64-encoded-secret-key: 123123
+#      ttl: 3600000
+#    snowflake:
+#      worker-id: 1
+#      datacenter-id: 1
+#    log:
+#      #日志记录忽略
+#      ignore-url:
+#        - /basic/log-business/**
+#        - /doc.html
+#        - /security-swagger/**
+#        - /basic-swagger/**
+#        - /trading-swagger/**
+#        - /shop-swagger/**
+#        - /swagger-resources/**
+#        - /webjars/**

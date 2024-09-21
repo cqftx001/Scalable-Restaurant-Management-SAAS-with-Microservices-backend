@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>restkeeper-model-shop</artifactId>
+        <groupId>com.itheima.restkeeper</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>model-shop-applet</artifactId>
+
+    <name>model-shop-applet</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>model-basic-interface</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>model-security-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>model-shop-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>framework-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>model-shop-interface</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- Dubbo Spring Cloud Starter -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>shop-applet</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

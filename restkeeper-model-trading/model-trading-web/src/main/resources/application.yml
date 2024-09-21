@@ -1,0 +1,42 @@
+#服务配置
+server:
+  #端口
+  port: 7076
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.129:8848
+        namespace: public
+        group: SEATA_GROUP
+dubbo:
+  application:
+    version: 1.0.0
+    logger: slf4j
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-trading-producer
+  scan:
+    base-packages: com.itheima.restkeeper.web
+  registry:
+    address: spring-cloud://192.168.200.129
+  protocol:
+    name: dubbo
+    port: 27076
+    threads: 200
+    accesslog: logs/model-trading-web-01.log
+restkeeper:
+  framework:
+    swagger:
+      swagger-path: com.itheima.restkeeper.web
+      title: 交易管理
+      description: 交易管理
+      contact-name: 上海黑马
+      contact-url: www.itheima.com
+      contact-email: 58948528@qq.com

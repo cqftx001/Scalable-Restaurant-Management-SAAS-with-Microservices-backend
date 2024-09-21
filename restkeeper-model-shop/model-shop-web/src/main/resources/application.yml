@@ -1,0 +1,87 @@
+#服务配置
+server:
+  #端口
+  port: 7078
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  #spring-cloud-alibaba对于seata事务组的定义
+  cloud:
+    alibaba:
+      seata:
+        #此配置与nacos中配置中心service.vgroupMapping.project_tx_group的key信息相同
+        tx-service-group: project_tx_group
+#springboot对seata的支持
+seata:
+  #此配置与nacos中配置中心service.vgroupMapping.project_tx_group的key信息相同
+  tx-service-group: project_tx_group
+  #开启seata事务
+  enabled: true
+  #指定当前事务应用的id
+  application-id: ${spring.application.name}
+  #使用数据源的代理，配置后无需自己实现seata数据源的事务代理
+  enable-auto-data-source-proxy: true
+  service:
+    #此配置与nacos中配置中心service.vgroupMapping.project_tx_group的key信息相同
+    vgroup-mapping:
+      project_tx_group: default
+    #此配置与nacos中配置中心service.default.grouplist = "192.168.200.129:9200"相同
+    grouplist:
+      default: 192.168.200.129:9200
+  #从nacos中读取配置
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+  #注册中心使用nacos
+  registry:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+dubbo:
+  #dubbo应用服务定义
+  application:
+    #版本
+    version: 1.0.0
+    #日志
+    logger: slf4j
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-shop-producer,model-shop-applet,model-shop-user
+  scan:
+    #扫描路径
+    base-packages: com.itheima.restkeeper.web
+  registry:
+    #注册中心
+    address: spring-cloud://192.168.200.129
+  #服务协议定义
+  protocol:
+    #服务协议名称
+    name: dubbo
+    #协议端口
+    port: 27078
+    #线程数
+    threads: 200
+    #dubbo调用日志
+    accesslog: logs/model-shop-web-01.log
+restkeeper:
+  framework:
+    swagger:
+      swagger-path: com.itheima.restkeeper.web
+      title: 店铺模块
+      description: model-shop-web
+      contact-name: 上海黑马
+      contact-url: www.itheima.com
+      contact-email: itheima@qq.com

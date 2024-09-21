@@ -1,0 +1,136 @@
+#服务配置
+server:
+  #端口
+  port: 7070
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    redisson:
+      config: classpath:singleServerConfig.yaml
+    host: 192.168.200.129
+    port: 6379
+    password: pass
+  cloud:
+    alicloud:
+      access-key:
+      secret-key:
+      oss:
+        bucket-name: itheima-sh-oss
+        endpoint: oss-cn-shanghai.aliyuncs.com
+    stream:
+      rabbit:
+        bindings:
+          log-input:
+            consumer:
+              acknowledge-mode: MANUAL #签收模式
+              durable-subscription: true #是否持久化队
+              binding-routing-key: log-key
+              prefetch: 100 #默认：1,限制consumer在消费消息时，一次能同时获取的消息数量，。
+              max-concurrency: 10 # 默认：1,queue的消费者的最大数量。当前消费者数量不足以及时消费消息时, 会动态增加消费者数量, 直到到达最大数量, 即该配置的值.
+              exchange-type: direct  # 指定交换机类型
+          sms-input:
+            consumer:
+              acknowledge-mode: MANUAL #签收模式
+              durable-subscription: true #是否持久化队
+              binding-routing-key: sms-key
+              prefetch: 100 #默认：1,限制consumer在消费消息时，一次能同时获取的消息数量，。
+              max-concurrency: 10 # 默认：1,queue的消费者的最大数量。当前消费者数量不足以及时消费消息时, 会动态增加消费者数量, 直到到达最大数量, 即该配置的值.
+              exchange-type: direct  # 指定交换机类型
+      binders: #需要绑定的rabbitmq的服务信息
+        defaultRabbit:  #定义的名称，用于bidding整合
+          type: rabbit  #消息组件类型
+          environment:  #配置rabbimq连接环境
+            spring:
+              rabbitmq:
+                host: 192.168.200.129   #rabbitmq 服务器的地址
+                port: 5672           #rabbitmq 服务器端口
+                username: admin       #rabbitmq 用户名
+                password: pass       #rabbitmq 密码
+                virtual-host: /       #虚拟路径
+      # Binding 配置项，对应 BindingProperties Map
+      bindings:
+        log-input:
+          destination: log-exchange # 目的地。这里使用 Topic
+          content-type: application/json # 内容格式。这里使用 JSON
+          group: log-queue # 消费者分组,队列名称：destination+group,此时队列为持久化的
+          binder: defaultRabbit
+          consumer:
+            concurrency: 3 # 初始/最少/空闲时 消费者数量。默认1
+            max-attempts: 6 # 重试次数
+        sms-input:
+          destination: sms-exchange # 目的地。这里使用 Topic
+          content-type: application/json # 内容格式。这里使用 JSON
+          group: sms-queue # 消费者分组,队列名称：destination+group,此时队列为持久化的
+          binder: defaultRabbit
+          consumer:
+            concurrency: 3 # 初始/最少/空闲时 消费者数量。默认1
+            max-attempts: 6 # 重试次数
+  #数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.200.129:3306/restkeeper-basic?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+      username: root
+      password: pass
+#mybatis配置
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.itheima.springcloud.pojo
+  # 该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象 。
+  type-aliases-super-type: com.itheima.restkeeper.basic.BasicPojo
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-statement-timeout: 60
+    default-fetch-size: 100
+  #忽略商户号表
+  ignore-enterprise-tables:
+    - tab_affix
+    - tab_log_business
+    - tab_data_dict
+    - tab_sms_blacklist
+    - tab_sms_channel
+    - tab_sms_send_record
+    - tab_sms_sign
+    - tab_sms_template
+    - undo_log
+  #忽略门店号表
+  ignore-store-tables:
+    - tab_affix
+    - tab_log_business
+    - tab_data_dict
+    - tab_sms_blacklist
+    - tab_sms_channel
+    - tab_sms_send_record
+    - tab_sms_sign
+    - tab_sms_template
+    - undo_log
+restkeeper:
+  framework:
+    xxl-job:
+      executor:
+        # 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。
+        # 执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+        admin-addresses: http://192.168.200.129:8280/xxl-job-admin/
+        # 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+        app-name: model-basic-job-listen
+        # 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，
+        # 该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
+        ip:
+        # 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，
+        # 单机部署多个执行器时，注意要配置不同执行器端口；
+        port: 1199
+        # 执行器通讯TOKEN [选填]：非空时启用；
+        access-token:
+        # 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；
+        log-path: logs/model-basic-job-listen/handler
+        # 执行器日志保存天数 [选填] ：值大于3时生效，启用执行器Log文件定期清理功能，否则不生效；
+        log-retention-days: -1

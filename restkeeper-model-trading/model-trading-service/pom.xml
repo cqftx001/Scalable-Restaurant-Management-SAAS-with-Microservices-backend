@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>restkeeper-model-trading</artifactId>
+        <groupId>com.itheima.restkeeper</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <!--trading业务定义模块-->
+    <artifactId>model-trading-service</artifactId>
+
+    <name>model-trading-service</name>
+
+    <dependencies>
+        <!--springboot的测试支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <!--mybatis-plus支持-->
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>framework-mybatis-plus</artifactId>
+        </dependency>
+
+        <!-- 阿里easy支付 -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-easysdk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.wechatpay-apiv3</groupId>
+            <artifactId>wechatpay-apache-httpclient</artifactId>
+            <version>0.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itheima.restkeeper</groupId>
+            <artifactId>framework-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

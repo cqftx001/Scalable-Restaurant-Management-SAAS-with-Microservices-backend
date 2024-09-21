@@ -1,0 +1,106 @@
+#服务配置
+server:
+  #端口
+  port: 7075
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    redisson:
+      config: classpath:singleServerConfig.yaml
+  #数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.200.129:3306/restkeeper-trading?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      username: root
+      password: pass
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.129:8848
+        namespace: public
+        group: SEATA_GROUP
+    alibaba:
+      seata:
+        tx-service-group: project_tx_group
+#mybatis配置
+mybatis-plus:
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.itheima.springcloud.pojo
+  # 该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象 。
+  type-aliases-super-type: com.itheima.restkeeper.basic.BasicPojo
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-statement-timeout: 60
+    default-fetch-size: 100
+  #忽略商户号表
+  ignore-enterprise-tables:
+    - tab_trading
+    - undo_log
+  #忽略门店号表
+  ignore-store-tables:
+    - tab_trading
+    - tab_trading_setting
+    - tab_pay_channel
+    - undo_log
+logging:
+  config: classpath:logback.xml
+seata:
+  tx-service-group: project_tx_group
+  enabled: true
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: true
+  service:
+    #这里的名字与file.conf中vgroup_project_tx_group = "default"相同
+    vgroup-mapping:
+      project_tx_group: default
+    #这里的名字与file.conf中default.grouplist = "192.168.200.129:8091"相同
+    grouplist:
+      default: 192.168.200.129:9200
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+  registry:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: 192.168.200.129:8848
+      username: nacos
+      password: nacos
+      namespace: a2334a2d-d74b-4bfb-ac6c-2058aa46aa8c
+dubbo:
+  application:
+    version: 1.0.0
+    logger: slf4j
+  scan:
+    base-packages: com.itheima.restkeeper
+  registry:
+    address: spring-cloud://192.168.200.129
+  protocol:
+    #指定二进制协议
+    name: dubbo
+    port: 27075
+    threads: 200
+    accesslog: logs/model-trading-producer-01.log
+  cloud:
+    subscribed-services: ''
+restkeeper:
+  framework:
+    #万维易源接口信息
+    show-api:
+      appid: 668779
+      sign: e8b5858d9b4b49ebb127cc137dd38cf7

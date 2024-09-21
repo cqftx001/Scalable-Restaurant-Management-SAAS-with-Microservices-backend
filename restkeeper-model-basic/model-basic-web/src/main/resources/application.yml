@@ -1,0 +1,40 @@
+#服务配置
+server:
+  #端口
+  port: 7072
+  #服务编码
+  tomcat:
+    uri-encoding: UTF-8
+#spring相关配置
+spring:
+  #应用配置
+  application:
+    #应用名称
+    name: model-basic-web
+  main:
+    allow-bean-definition-overriding: true
+dubbo:
+  application:
+    version: 1.0.0
+    logger: slf4j
+  cloud:
+    #表示要订阅服务的服务名，可以配置'*'，代表订阅所有服务，不推荐使用。若需订阅多应用，使用 "," 分割。
+    subscribed-services: model-basic-producer
+  scan:
+    base-packages: com.itheima.restkeeper.web
+  registry:
+    address: spring-cloud://192.168.200.129
+  protocol:
+    name: dubbo
+    port: 27072
+    threads: 200
+    accesslog: logs/model-basic-web-01.log
+restkeeper:
+  framework:
+    swagger:
+      swagger-path: com.itheima.restkeeper.web
+      title: 基础服务
+      description: 附件、数据字典、日志
+      contact-name: 上海黑马
+      contact-url: www.itheima.com
+      contact-email: itheima@qq.com
